@@ -34,10 +34,8 @@ def replace_main(dataframe1):
     return dataframe2
 
 def main():
-    dataframe1 = pd.read_csv("new.csv") 
+    dataframe1 = pd.read_csv("FileName.csv") 
     dataframe2= replace_main(dataframe1)
-    i=0
-    for i in range(1500,1900,20):
-        print(dataframe2['short_description'][i])
+    print(dataframe2['short_description'])
 
 main()
