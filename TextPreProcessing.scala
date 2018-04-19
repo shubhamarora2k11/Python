@@ -2,24 +2,30 @@ import scala.util.matching.Regex
 
 object HelloWorld {
    def main(args: Array[String]) {
-       
-      val pattern  = "(\\w+(\\-||)\\w+\\.\\w+\\.[a-z0-9.]*)".r
-      val pattern2 = "[0-9]".r
-      val pattern3 = "((\\w+||)\\@vm\\-\\_.+\\@)".r
-      val pattern4 = "['()%:.,/>-]".r
-      //val pattern5 = "\\s\\s+".r
       
-      val str = "High Queue Latency Threshold Violation Detected. Currently .% of the (CPU Utilization) data values,  out of a total of , in the last  minutes violated"
+      val str = "host on ABCD-CDEF-xyz"
       
-      var replaced    = pattern.replaceAllIn(str, "")
+      var replaced    = "(\\w+(\\-||)\\w+\\.\\w+\\.[a-z0-9.]*)".r.replaceAllIn(str, "")
+      
+      replaced = "[0-9]".r.replaceAllIn(replaced, "")
+      replaced = "on\\s\\w+-\\w+".r.replaceAllIn(replaced, "")
       replaced = "\\.\\/.+".r.replaceAllIn(replaced, "")
-      replaced = pattern2.replaceAllIn(replaced, "")
-      replaced = pattern3.replaceAllIn(replaced, "")
-      replaced = pattern4.replaceAllIn(replaced, " ")
+      replaced = "((\\w+||)\\@vm\\-\\_.+\\@)".r.replaceAllIn(replaced, "")
+      replaced = "['_()%:.,/>/<\\[\\]\\\\*#-]".r.replaceAllIn(replaced, " ")
+      replaced = "\\s[A-Za-z]\\z".r.replaceAllIn(replaced, "")
+      replaced = "\\s[A-Za-z]\\s".r.replaceAllIn(replaced, "")
       replaced = "\\s\\s+".r.replaceAllIn(replaced, " ")
-      replaced = "\\s[A-Za-z]\\z||\\s".r.replaceAllIn(replaced, "")
       
-      println(replaced.toLowerCase())
+      replaced = replaced.toLowerCase()
+      
+      //additional
+      
+      replaced = "database\\s.+\\sstatus".r.replaceAllIn(replaced, "database status")
+      replaced = "host\\s\\w+.+\\sis unreachable".r.replaceAllIn(replaced, "host is unreachable")
+      replaced = ".+\\sping\\sdevice\\savailability".r.replaceAllIn(replaced, "ping device availability")
+      replaced = ".+\\svmware\\svcenter".r.replaceAllIn(replaced, "vmware vcenter")
+      
+      println(replaced)
       
    }
 }
